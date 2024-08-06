@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.title-span::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  bottom: 2px;
+  color: #fb923c;
+  height: 5px;
+  background-color: black;
+}
+
+@layer base {
+  .max-container {
+    @apply max-w-full mx-auto w-full;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.addJobContainer {
+  max-width: 700px;
+  width: 100%;
+  margin-inline: auto;
+}

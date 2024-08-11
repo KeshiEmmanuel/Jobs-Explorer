@@ -6,8 +6,12 @@ export default function JobCard({ job }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
   let description = job.description;
 
-  if (!showFullDescription) {
-    description = description.substring(0, 90) + "..";
+  if (description.length > 90) {
+    if (!showFullDescription) {
+      description = description.substring(0, 90) + "..";
+    }
+  } else {
+    description;
   }
   return (
     <article className="bg-orange-50 pt-4 px-5 shadow">

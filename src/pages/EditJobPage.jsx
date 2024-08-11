@@ -1,45 +1,32 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { JOB_SALARIES, JOB_TYPES } from "../constants";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+export default function EditJobPage() {
+  const { id } = useParams();
+  const data = useLoaderData();
 
-const AddJobPage = ({ addJobSubmit }) => {
-  const navgiate = useNavigate();
   const [job, setJob] = useState({
-    title: "",
-    type: "",
-    location: "",
-    description: "",
-    salary: "Under $50K",
-    name: "",
-    companyDescription: "",
-    contactEmail: "",
-    contactPhone: "",
+    title: data.title,
+    type: data.type,
+    location: data.location,
+    description: data.description,
+    salary: data.salary,
+    name: data.company.name,
+    companyDescription: data.company.description,
+    contactEmail: data.company.contactEmail,
+    contactPhone: data.company.contactPhone,
   });
+
+  function handleJobSubmit(e) {
+    e.preventDefault();
+  }
+  console.log(data);
   console.log(job);
 
-  const handleJobSubmit = (e) => {
-    e.preventDefault();
-    const newJob = {
-      title: job.title,
-      type: job.type,
-      description: job.description,
-      location: job.location,
-      salary: job.salary,
-      company: {
-        name: job.companyName,
-        description: job.companyDescription,
-        contactEmail: job.contactEmail,
-        contactPhone: job.contactPhone,
-      },
-    };
-    addJobSubmit(newJob);
-    return navgiate("/jobs");
-  };
   return (
     <section className="addJobContainer shadow-lg px-4 mb-10">
       <div>
-        <h2 className="text-center font-secondary font-semibold">Add Job</h2>
+        <h2 className="text-center font-secondary font-semibold">Edit Job</h2>
         <form className="font-secondary" onSubmit={handleJobSubmit}>
           {/* Job-Type */}
           <div className="my-3">
@@ -51,6 +38,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name=""
                 id=""
                 className="w-full border-2 p-1"
+                value={job.type}
                 onClick={(e) => {
                   setJob({ ...job, type: e.target.value });
                 }}
@@ -73,6 +61,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 type="text"
                 className="w-full border-2 py-1 px-2"
                 placeholder="Enter Job Listing Name"
+                value={job.title}
                 onChange={(e) => {
                   setJob({ ...job, title: e.target.value });
                 }}
@@ -87,6 +76,7 @@ const AddJobPage = ({ addJobSubmit }) => {
             <div className="py-2">
               <textarea
                 className="w-full h-40 border-2 p-2"
+                value={job.description}
                 placeholder="Add job duties, expections, requirements, etc"
                 onChange={(e) => {
                   setJob({ ...job, description: e.target.value });
@@ -104,6 +94,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name=""
                 id=""
                 className="w-full border-2 p-1"
+                value={job.salary}
                 onClick={(e) => {
                   setJob({ ...job, salary: e.target.value });
                 }}
@@ -120,6 +111,7 @@ const AddJobPage = ({ addJobSubmit }) => {
             <div className="py-2">
               <input
                 type="text"
+                value={job.location}
                 className="w-full border-2  p-2"
                 placeholder="Company location"
                 onChange={(e) => {
@@ -140,6 +132,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               <input
                 type="text"
                 placeholder="Company Name"
+                value={job.name}
                 className="border-2 w-full p-2"
                 onChange={(e) => {
                   setJob({ ...job, companyName: e.target.value });
@@ -158,6 +151,7 @@ const AddJobPage = ({ addJobSubmit }) => {
             <textarea
               className="w-full h-40 border-2 p-2"
               placeholder="What does your company do?"
+              value={job.companyDescription}
               onChange={(e) => {
                 setJob({ ...job, companyDescription: e.target.value });
               }}
@@ -170,6 +164,7 @@ const AddJobPage = ({ addJobSubmit }) => {
             </label>
             <input
               type="text"
+              value={job.contactEmail}
               placeholder="Email address for applicants"
               className="w-full border-2 p-1"
               onChange={(e) => {
@@ -186,6 +181,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               type="text"
               placeholder="Optional phone for applicants"
               className="w-full border-2 p-1"
+              value={job.contactPhone}
               onChange={(e) => {
                 setJob({ ...job, contactPhone: e.target.value });
               }}
@@ -193,13 +189,11 @@ const AddJobPage = ({ addJobSubmit }) => {
           </div>
           <div className="flex justify-end">
             <button className=" bg-orange-500 px-6 hover:opacity-[0.5] transition-all text-white py-3 mb-2 rounded-full">
-              Add Job
+              Edit Job
             </button>
           </div>
         </form>
       </div>
     </section>
   );
-};
-
-export default AddJobPage;
+}

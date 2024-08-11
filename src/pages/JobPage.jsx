@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-
-const JobPage = () => {
+import { useNavigate } from "react-router-dom";
+const JobPage = ({ handleDeleteJob }) => {
   const [job, setJob] = useState({});
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   console.log(id);
-
   useEffect(() => {
     async function FetchJob() {
       try {
@@ -25,6 +26,15 @@ const JobPage = () => {
     FetchJob();
   }, [id]);
   console.log(job);
+
+  function onDeleteCLick(jobID) {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this job listing?"
+    );
+    if (!confirm) return;
+    handleDeleteJob(jobID);
+    navigate("/jobs");
+  }
   return (
     <section className="mt-4 lg:m-0">
       <p>{loading && "Loading"}</p>
@@ -90,11 +100,13 @@ const JobPage = () => {
                   Edit Job
                 </button>
               </Link>
-              <Link>
-                <button className="text-white bg-red-500 w-full xl:w-[350px] mx-auto xl:m-0 font-primary h-9 font-bold rounded-full">
-                  Delete Job
-                </button>
-              </Link>
+
+              <button
+                className="text-white bg-red-500 w-full xl:w-[350px] mx-auto xl:m-0 font-primary h-9 font-bold rounded-full"
+                onClick={() => onDeleteCLick(job.id)}
+              >
+                Delete Job
+              </button>
             </div>
           </div>
         </div>

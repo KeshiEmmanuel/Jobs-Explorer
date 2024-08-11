@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { JOB_SALARIES, JOB_TYPES } from "../constants";
 import { useLoaderData, useParams } from "react-router-dom";
-export default function EditJobPage() {
+import { useNavigate } from "react-router-dom";
+export default function EditJobPage({ updateJobSubmit }) {
   const { id } = useParams();
   const data = useLoaderData();
-
+  const navigate = useNavigate();
   const [job, setJob] = useState({
+    id: data.id,
     title: data.title,
     type: data.type,
     location: data.location,
@@ -17,8 +20,24 @@ export default function EditJobPage() {
     contactPhone: data.company.contactPhone,
   });
 
-  function handleJobSubmit(e) {
+  function handleJobUpdate(e) {
     e.preventDefault();
+    const updatedJob = {
+      id,
+      title: job.title,
+      type: job.type,
+      description: job.description,
+      location: job.location,
+      salary: job.salary,
+      company: {
+        name: job.companyName,
+        description: job.companyDescription,
+        contactEmail: job.contactEmail,
+        contactPhone: job.contactPhone,
+      },
+    };
+    updateJobSubmit(updatedJob);
+    return navigate(`/jobs/${job.id}`);
   }
   console.log(data);
   console.log(job);
@@ -27,7 +46,7 @@ export default function EditJobPage() {
     <section className="addJobContainer shadow-lg px-4 mb-10">
       <div>
         <h2 className="text-center font-secondary font-semibold">Edit Job</h2>
-        <form className="font-secondary" onSubmit={handleJobSubmit}>
+        <form className="font-secondary" onSubmit={handleJobUpdate}>
           {/* Job-Type */}
           <div className="my-3">
             <label htmlFor="job-type" className="font-semibold">

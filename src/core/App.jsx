@@ -16,6 +16,7 @@ import EditJobPage from "../pages/EditJobPage";
 import MainLayout from "../layouts/MainLayout";
 
 export default function App() {
+  /* CRUD Operation - Create New Job */
   const addJobSubmit = async (newJob) => {
     const res = await fetch("/api/jobs", {
       method: "POST",
@@ -26,7 +27,7 @@ export default function App() {
     });
     return;
   };
-
+  /* CRUD Operation - Delete Job using job-id*/
   const handleDeleteJob = async (id) => {
     console.log("Delete", id);
     const res = await fetch(`/api/jobs/${id}`, {
@@ -34,12 +35,25 @@ export default function App() {
     });
     return;
   };
+  /* CRUD Operation - Editing / Updating Job using job-id*/
+  const updateJobSubmit = async (job) => {
+    const res = await fetch(`/api/jobs/${job.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(job),
+    });
+    return;
+  };
 
+  /* JOB-LOADER */
   const jobLoader = async ({ params }) => {
     const res = await fetch(`/api/jobs/${params.id}`);
     const data = await res.json();
     return data;
   };
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
@@ -56,7 +70,7 @@ export default function App() {
         />
         <Route
           path="/jobs/edit/:id"
-          element={<EditJobPage />}
+          element={<EditJobPage updateJobSubmit={updateJobSubmit} />}
           loader={jobLoader}
         />
         {/* ... etc. */}

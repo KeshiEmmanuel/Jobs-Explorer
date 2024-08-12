@@ -7,7 +7,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomePage from "../pages/HomePage";
-import Navbar from "../components/Navbar";
 import JobsPage from "../pages/JobsPage";
 import AddJobPage from "../pages/AddJobPage";
 import NotFoundPage from "../pages/NotFoundPage";
